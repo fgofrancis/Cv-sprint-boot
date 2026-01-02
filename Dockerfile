@@ -3,9 +3,8 @@ FROM eclipse-temurin:21-jdk AS build
 WORKDIR /app
 COPY . .
 RUN ./mvnw clean package -DskipTests
-
 #Etapa de ejecucion del jar y creacion de imagen
-FROM eclipse-termurin:21-jre
+FROM eclipse-temurin:21-jre
 WORKDIR /app
 COPY --from=build /app/target/*.jar pepe.jar
 EXPOSE 8080
