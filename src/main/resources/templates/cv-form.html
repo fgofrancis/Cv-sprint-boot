@@ -1,0 +1,119 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org"  lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" th:href="@{/css/form-style.css}">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Nuestro CV</h1>
+<!--    cargando un campo especifico-->
+<!--    <form>-->
+<!--        <label for="firstName">Nombre:</label>-->
+<!--        <input type="text" id="firstName" th:value="${firstName}"/>-->
+<!--    </form>-->
+
+<!--    Cargado un objet completo-->
+        <form th:object="${cvData}" method="post" th:action="@{/generate-cv}">
+            <h2>Detalles Personales</h2>
+            <div>
+                <label for="firstName">Nombre:</label>
+                <input type="text" id="firstName" th:field="*{personalDetails.firstName}"/>
+            </div>
+            <div>
+                <label for="lastName">Apellido:</label>
+                <input type="text" id="lastName" th:field="*{personalDetails.lastName}"/>
+            </div>
+            <div>
+                <label for="email">email:</label>
+                <input type="text" id="email" th:field="*{personalDetails.email}"/>
+            </div>
+            <div>
+                <label for="phone">phone:</label>
+                <input type="text" id="phone" th:field="*{personalDetails.phone}"/>
+            </div>
+            <div>
+                <label for="address">address:</label>
+                <input type="text" id="address" th:field="*{personalDetails.address}"/>
+            </div>
+            <div>
+                <label for="city">city:</label>
+                <input type="text" id="city" th:field="*{personalDetails.city}"/>
+            </div>
+            <div>
+                <label for="province">province:</label>
+                <input type="text" id="province" th:field="*{personalDetails.province}"/>
+            </div>
+            <div>
+                <label for="postalCode">postalCode:</label>
+                <input type="text" id="postalCode" th:field="*{personalDetails.postalCode}"/>
+            </div>
+            <div>
+                <label for="professionalProfile">professionalProfile:</label>
+                <textarea id="professionalProfile" th:field="*{personalDetails.professionalProfile}" rows="5"></textarea>
+            </div>
+            <hr/>
+
+            <h2>Educación</h2>
+                <div th:each="education, start : ${cvData.educations}">
+                    <h3>Educación <span th:text="${start.index + 1}"></span></h3>
+                    <div>
+                        <label th:for="${'educations_institution_' + start.index}">Institución:</label>
+                        <input type="text" th:id="${'educations_institution_' + start.index}" th:field="*{educations[__${start.index}__].institution}"/>
+                    </div>
+                    <div>
+                        <label th:for="${'educations_degree_' + start.index}">Grado:</label>
+                        <input type="text" th:id="${'educations_degree_' + start.index}" th:field="*{educations[__${start.index}__].degree}"/>
+                    </div>
+                    <div>
+                        <label>Periodo:</label>
+                        <input type="text" th:field="*{educations[__${start.index}__].period}"/>
+                    </div>
+                    <div>
+                        <label>Descripcion:</label>
+                        <textarea th:field="*{educations[__${start.index}__].description}" rows="5"></textarea>
+                    </div>
+                    <hr th:if="${!start.last}"/>
+                </div>
+
+            <h2>Experiencia</h2>
+                <div th:each="experience, start : ${cvData.experiences}">
+                    <h3>Experiencia <span th:text="${start.index + 1}"></span></h3>
+                    <div>
+                        <label>JobTitle:</label>
+                        <input type="text" th:field="*{experiences[__${start.index}__].jobTitle}"/>
+                    </div>
+                    <div>
+                        <label>Company</label>
+                        <input type="text" th:field="*{experiences[__${start.index}__].company}"/>
+                    </div>
+                    <div>
+                        <label>Period</label>
+                        <input type="text" th:field="*{experiences[__${start.index}__].period}"/>
+                    </div>
+                    <div>
+                        <label>Description</label>
+                        <textarea th:field="*{experiences[__${start.index}__].description}", rows="5"></textarea>
+                    </div>
+                    <hr th:if="${!start.last}"/>
+                </div>
+
+            <h2>Habilidades</h2>
+                <div th:each="skill, start : ${cvData.skills}">
+                    <h3>Habilidad <span th:text="${start.index + 1}"></span></h3>
+                    <div>
+                        <label>Name</label>
+                        <input type="text" th:field="*{skills[__${start.index}__].name}"/>
+                    </div>
+                    <div>
+                        <label>Nivel</label>
+                        <input type="text" th:field="*{skills[__${start.index}__].level}"/>
+                    </div>
+                    <hr th:if="${!start.last}"/>
+                </div>
+            <button type="submit">Generar/Actualizar CV</button>
+        </form>
+
+</body>
+</html>
